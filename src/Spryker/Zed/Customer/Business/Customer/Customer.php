@@ -240,6 +240,7 @@ class Customer implements CustomerInterface
         $customerEntity->setCustomerReference($this->customerReferenceGenerator->generateCustomerReference($customerTransfer));
         $customerEntity->setRegistrationKey($this->generateKey());
 
+        $this->customerPluginExecutor->executePreCustomerAddPlugins($customerTransfer);
         $customerEntity->save();
 
         $customerTransfer->setIdCustomer($customerEntity->getPrimaryKey());
@@ -591,7 +592,9 @@ class Customer implements CustomerInterface
             return $customerResponseTransfer;
         }
 
+        $this->customerPluginExecutor->executePreUpdateCustomerPlugins($customerTransfer);
         $customerEntity->save();
+        $this->customerPluginExecutor->executePostUpdateCustomerPlugins($customerTransfer);
 
         return $customerResponseTransfer;
     }

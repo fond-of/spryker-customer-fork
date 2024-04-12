@@ -22,15 +22,39 @@ class CustomerPluginExecutor implements CustomerPluginExecutorInterface
     protected array $customerPostDeletePlugins;
 
     /**
+     * @var list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreAddPluginInterface>
+     */
+    protected array $customerPreAddPlugins;
+
+    /**
+     * @var list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface>
+     */
+    protected array $customerPreUpdatePlugins;
+
+    /**
+     * @var list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostUpdatePluginInterface>
+     */
+    protected array $customerPostUpdatePlugins;
+
+    /**
      * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\PostCustomerRegistrationPluginInterface> $postCustomerRegistrationPlugins
      * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostDeletePluginInterface> $customerPostDeletePlugins
+     * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreAddPluginInterface> $customerPreAddPlugins
+     * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface> $customerPreUpdatePlugins
+     * @param list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostUpdatePluginInterface> $customerPostUpdatePlugins
      */
     public function __construct(
         array $postCustomerRegistrationPlugins = [],
-        array $customerPostDeletePlugins = []
+        array $customerPostDeletePlugins = [],
+        array $customerPreAddPlugins = [],
+        array $customerPreUpdatePlugins = [],
+        array $customerPostUpdatePlugins = []
     ) {
         $this->postCustomerRegistrationPlugins = $postCustomerRegistrationPlugins;
         $this->customerPostDeletePlugins = $customerPostDeletePlugins;
+        $this->customerPreAddPlugins = $customerPreAddPlugins;
+        $this->customerPreUpdatePlugins = $customerPreUpdatePlugins;
+        $this->customerPostUpdatePlugins = $customerPostUpdatePlugins;
     }
 
     /**
@@ -54,6 +78,42 @@ class CustomerPluginExecutor implements CustomerPluginExecutorInterface
     {
         foreach ($this->customerPostDeletePlugins as $customerPostDeletePlugin) {
             $customerPostDeletePlugin->execute($customerTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePreCustomerAddPlugins(CustomerTransfer $customerTransfer): void
+    {
+        foreach ($this->customerPreAddPlugins as $customerPreAddPlugin) {
+            $customerPreAddPlugin->execute($customerTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePreUpdateCustomerPlugins(CustomerTransfer $customerTransfer): void
+    {
+        foreach ($this->customerPreUpdatePlugins as $customerPreUpdatePlugin) {
+            $customerPreUpdatePlugin->execute($customerTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePostUpdateCustomerPlugins(CustomerTransfer $customerTransfer): void
+    {
+        foreach ($this->customerPostUpdatePlugins as $customerPostUpdatePlugin) {
+            $customerPostUpdatePlugin->execute($customerTransfer);
         }
     }
 }

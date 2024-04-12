@@ -24,4 +24,25 @@ interface CustomerPluginExecutorInterface
      * @return void
      */
     public function executeCustomerPostDeletePlugins(CustomerTransfer $customerTransfer): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePreCustomerAddPlugins(CustomerTransfer $customerTransfer): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePreUpdateCustomerPlugins(CustomerTransfer $customerTransfer): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return void
+     */
+    public function executePostUpdateCustomerPlugins(CustomerTransfer $customerTransfer): void;
 }
