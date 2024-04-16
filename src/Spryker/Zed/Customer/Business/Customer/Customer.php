@@ -572,6 +572,8 @@ class Customer implements CustomerInterface
         $customerResponseTransfer = $this->createCustomerResponseTransfer();
         $customerResponseTransfer->setCustomerTransfer($customerTransfer);
 
+        $this->customerPluginExecutor->executePreUpdateCustomerPlugins($customerTransfer);
+
         $customerEntity = $this->getCustomer($customerTransfer);
         $customerEntity->fromArray($customerTransfer->modifiedToArray());
 
@@ -592,7 +594,6 @@ class Customer implements CustomerInterface
             return $customerResponseTransfer;
         }
 
-        $this->customerPluginExecutor->executePreUpdateCustomerPlugins($customerTransfer);
         $customerEntity->save();
         $this->customerPluginExecutor->executePostUpdateCustomerPlugins($customerTransfer);
 
