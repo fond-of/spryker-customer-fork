@@ -108,6 +108,9 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
         return new CustomerPluginExecutor(
             $this->getPostCustomerRegistrationPlugins(),
             $this->getCustomerPostDeletePlugins(),
+            $this->getCustomerPreAddPlugins(),
+            $this->getCustomerPreUpdatePlugins(),
+            $this->getCustomerPostUpdatePlugins(),
         );
     }
 
@@ -411,5 +414,29 @@ class CustomerBusinessFactory extends AbstractBusinessFactory
             $this->getRepository(),
             $this->getConfig(),
         );
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreAddPluginInterface>
+     */
+    public function getCustomerPreAddPlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_PRE_ADD);
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface>
+     */
+    public function getCustomerPreUpdatePlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_PRE_UPDATE);
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostUpdatePluginInterface>
+     */
+    public function getCustomerPostUpdatePlugins(): array
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::PLUGINS_CUSTOMER_POST_UPDATE);
     }
 }

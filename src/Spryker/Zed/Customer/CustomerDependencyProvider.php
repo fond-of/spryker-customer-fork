@@ -124,6 +124,21 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @var string
      */
+    public const PLUGINS_CUSTOMER_PRE_ADD = 'PLUGINS_CUSTOMER_PRE_ADD';
+
+    /**
+     * @var string
+     */
+    public const PLUGINS_CUSTOMER_POST_UPDATE = 'PLUGINS_CUSTOMER_POST_UPDATE';
+
+    /**
+     * @var string
+     */
+    public const PLUGINS_CUSTOMER_PRE_UPDATE = 'PLUGINS_CUSTOMER_PRE_UPDATE';
+
+    /**
+     * @var string
+     */
     public const SUB_REQUEST_HANDLER = 'SUB_REQUEST_HANDLER';
 
     /**
@@ -145,6 +160,9 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPostCustomerRegistrationPlugins($container);
         $container = $this->addCustomerService($container);
         $container = $this->addCustomerPostDeletePlugins($container);
+        $container = $this->addCustomerPreAddPlugins($container);
+        $container = $this->addCustomerPreUpdatePlugins($container);
+        $container = $this->addCustomerPostUpdatePlugins($container);
 
         return $container;
     }
@@ -461,5 +479,71 @@ class CustomerDependencyProvider extends AbstractBundleDependencyProvider
         });
 
         return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerPreAddPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_CUSTOMER_PRE_ADD, function () {
+            return $this->getCustomerPreAddPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreAddPluginInterface>
+     */
+    protected function getCustomerPreAddPlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerPreUpdatePlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_CUSTOMER_PRE_UPDATE, function () {
+            return $this->getCustomerPreUpdatePlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPreUpdatePluginInterface>
+     */
+    protected function getCustomerPreUpdatePlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerPostUpdatePlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_CUSTOMER_POST_UPDATE, function () {
+            return $this->getCustomerPostUpdatePlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return list<\Spryker\Zed\CustomerExtension\Dependency\Plugin\CustomerPostUpdatePluginInterface>
+     */
+    protected function getCustomerPostUpdatePlugins(): array
+    {
+        return [];
     }
 }
